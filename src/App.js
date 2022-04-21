@@ -1,10 +1,11 @@
 import './App.css'
 import Cell from './Components/Cell'
+import styles from './style.module.css'
 import { useEffect, useState } from 'react'
 // const numOfRow = Math.round(window.innerWidth / 100)
 // const numOfCol = Math.round(window.innerHeight / 100)
-const numOfRow = 40
-const numOfCol = 40
+const numOfRow = 30
+const numOfCol = 30
 const directions = [
   [0, 1],
   [0, -1],
@@ -24,15 +25,11 @@ const gliderMovements = [
   [-1, 1],
 ]
 
-const gliderGunMovements = [
-  [1, -17],
-  [1, -18],
-]
-
 function App () {
   const [isPaused, setIsPaused] = useState(true)
   const [counter, setCounter] = useState(0)
-  const [speed, setSpeed] = useState(1)
+  const [addCellOption, setAddCellOption] = useState()
+  const [isRainbow, setIsRainbow] = useState(false)
 
   const [grid, setGrid] = useState(() => {
     const grid = []
@@ -45,6 +42,18 @@ function App () {
     }
     return grid
   })
+
+  const clearGrid = () => {
+    const grid = []
+    for (let i = 0; i < numOfRow; i++) {
+      const row = []
+      for (let j = 0; j < numOfCol; j++) {
+        row.push(0)
+      }
+      grid.push(row)
+    }
+    return grid
+  }
 
   const generateRandomGrid = () => {
     const grid = []
@@ -141,49 +150,68 @@ function App () {
   }
 
   return (
+
     <div>
       <p>generations: {counter}</p>
-      <button onClick={() => {
-        setIsPaused(prevState => !prevState)
-        console.log('clicked')
-      }}>
-        {isPaused ? 'play' : 'pause'}
-      </button>
-      <button onClick={() => {
-        console.table(grid)
-      }}>
-        print grid
-      </button>
 
-      <button onClick={() => {
-        setGrid(generateRandomGrid)
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '3rem',
+        margin: '2em 0',
       }}>
-        random
-      </button>
+        <button className={styles.button} onClick={() => {
+          setIsPaused(prevState => !prevState)
+        }}>
+          {isPaused ? 'Play' : 'Pause'}
+        </button>
 
-      <div>
-        <input type="range" min={100} max={3000} value={speed}
-               onChange={(event) => setSpeed(parseInt(event.target.value))}/>
+        <button className={styles.button} onClick={() => {
+          setGrid(generateRandomGrid)
+        }}>
+          Random
+        </button>
 
-        <p>{speed}</p>
+        <button className={styles.button} onClick={() => {
+          setGrid(clearGrid)
+        }}>
+          Clear Grid
+        </button>
+
+        <button className={styles.button} onClick={() => {
+          setIsRainbow(prevState => !prevState)
+        }}>
+          {isRainbow ? 'Black & White' : 'Rainbow'}
+        </button>
       </div>
+
+      {/*<button onClick={() => {*/}
+      {/*  console.table(grid)*/}
+      {/*}}>*/}
+      {/*  print grid*/}
+      {/*</button>*/}
+
 
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${numOfCol}, 20px)`,
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
         {grid.map((rows, i) => {
           return rows.map((cols, j) => {
             return (
               <Cell key={`${i}-${j}`} grid={grid} i={i} j={j}
                     randomColor={getRandomColor()}
-                    onClick={() => addGlider(i, j)}/>
+                    onClick={() => addLiveCellOnClick(i, j)}
+                    isRainbow={isRainbow}
+              />
             )
           })
         })}
       </div>
 
-      <p>end</p>
 
     </div>
   )
