@@ -107,7 +107,7 @@ function App () {
           return gridCopy2
         })
       }
-    }, 10)
+    }, 100)
     return () => clearInterval(interval)
   }, [isPaused])
 
