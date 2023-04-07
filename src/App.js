@@ -1,7 +1,9 @@
 import './App.css'
 import Cell from './Components/Cell'
 import styles from './style.module.css'
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react';
+import AdSense from 'react-adsense';
+
 // const numOfRow = Math.round(window.innerWidth / 100)
 // const numOfCol = Math.round(window.innerHeight / 100)
 const numOfRow = 30
@@ -24,6 +26,8 @@ const gliderMovements = [
   [1, 1],
   [-1, 1],
 ]
+
+
 
 function App () {
   const [isPaused, setIsPaused] = useState(true)
@@ -152,6 +156,11 @@ function App () {
   return (
 
     <div>
+      <AdSense.Google
+        client=""
+        slot=""
+      />
+
       <p>generations: {counter}</p>
 
       <div style={{
