@@ -157,7 +157,7 @@ function App () {
 
     <div>
       <AdSense.Google
-        client=""
+        client="ca-pub-5088065479092649"
         slot=""
       />
 
